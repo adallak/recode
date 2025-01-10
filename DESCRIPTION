@@ -1,11 +1,28 @@
 Package: recode
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: recode: complementary package for the book
+Version: 0.0.0.9000
+Authors@R: 
+    person("Aramayis", "Dallakyan", , "dallakyan.aramayis@gmail.com", role = c("cre"))
+Description: This is a complementary package for the book title " Regression in Covariances, Dependencies and Graphs".
+License: GPL-3
+Imports: 
+         glasso,
+         CVglasso, 
+         MASS,
+         ggplot2,
+         ncvreg,
+         ggpubr,
+         glmnet,
+         sparsegl
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
 LazyData: true
+LazyDataCompression: xz
+Suggests: 
+    rmarkdown,
+    knitr
