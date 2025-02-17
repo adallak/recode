@@ -80,13 +80,10 @@ genlatentdata <- function(p_o = 10, p_l = 5, N = 150,
 #' * `data` n x p data
 
 #' @export
-generatedata <- function(n, p, type = c("star", "AD1"),
-                         variance = 1, rho = 0.5, AD_order = 1,
+generatedata <- function(n, p, type = c("star", "AD"),
+                         variance = 1, rho = 0.9, AD_order = 1,
                          seed = 123) {
-   # n: Number of observations
-   # p: Number of variables (dimensions)
-   # central_variance: Variance of the central node
-   # edge_weight: Precision weight connecting the central node to others
+
    set.seed(seed)
    if (AD_order >= p) {
       stop("Error: 'AD_order' must be less than 'p' (number of variables).")
@@ -104,11 +101,11 @@ generatedata <- function(n, p, type = c("star", "AD1"),
 
    if(type == "star") {
       # Set central node index (1st variable)
-      Omega[1, 1] <- central_variance + (p - 1) * edge_weight
+      Omega[1, 1] <- variance + (p - 1) * rho
       for (i in 2:p) {
          Omega[i, i] <- 1  # Variance of peripheral nodes
-         Omega[i, 1] <- -edge_weight  # Connection to the central node
-         Omega[1, i] <- -edge_weight  # Symmetric connection
+         Omega[i, 1] <- -rho  # Connection to the central node
+         Omega[1, i] <- -rho  # Symmetric connection
       }
    }
    else {
@@ -125,7 +122,7 @@ generatedata <- function(n, p, type = c("star", "AD1"),
    Sigma <- solve(Omega)
 
    # Generate data from multivariate normal distribution
-   data <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
+   data <- MASS::mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
 
    return(list("Omega" = Omega, "data" = data))
 }
