@@ -172,3 +172,15 @@
 #'
 #' @format ## A data frame with 1000 rows and 16 variables:
 "brand"
+
+
+#' @title  Stock and Watson (2002) dataset.
+#' @description A dataset containing 215 monthly US macroeconomic variables spanning the period 1959-1998.
+#' The dataset is borrowed from  Stock and Watson (2002).
+#'
+#' @docType data
+#' @usage data(SW2002)
+#'
+#' @format ## A data frame with 215 rows and 146 variables:
+#' @source http://www.princeton.edu/~mwatson/ddisk/wc00.zip
+"SW2002"

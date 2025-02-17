@@ -64,3 +64,69 @@ genlatentdata <- function(p_o = 10, p_l = 5, N = 150,
    return(list(X = X, theta_o = theta_o, theta_obs = theta_cond_o ))
 }
 
+
+#' Generate data from AD or Star shape undirected graph
+#'
+#'
+#' @param n    number of observations
+#' @param p    number of variables
+#' @param type type of the undirected graph
+#' @param variance variance of the generated data; default is 1
+#' @param rho  defines edge weights
+#' @param AD_order order of the AD process; ignored for `type(star)`
+#' @param seed random seed
+#' @returns
+#' *`omega` p x p precision matrix
+#' * `data` n x p data
+
+#' @export
+generatedata <- function(n, p, type = c("star", "AD1"),
+                         variance = 1, rho = 0.5, AD_order = 1,
+                         seed = 123) {
+   # n: Number of observations
+   # p: Number of variables (dimensions)
+   # central_variance: Variance of the central node
+   # edge_weight: Precision weight connecting the central node to others
+   set.seed(seed)
+   if (AD_order >= p) {
+      stop("Error: 'AD_order' must be less than 'p' (number of variables).")
+   }
+   if (n <= 0) {
+      stop("Error: 'n' must be positive number.")
+   }
+   if (p <= 0) {
+      stop("Error: 'p' must be positive number.")
+   }
+
+   type = match.arg(type)
+   # Initialize precision matrix
+   Omega <- matrix(0, p, p)
+
+   if(type == "star") {
+      # Set central node index (1st variable)
+      Omega[1, 1] <- central_variance + (p - 1) * edge_weight
+      for (i in 2:p) {
+         Omega[i, i] <- 1  # Variance of peripheral nodes
+         Omega[i, 1] <- -edge_weight  # Connection to the central node
+         Omega[1, i] <- -edge_weight  # Symmetric connection
+      }
+   }
+   else {
+      for (i in 1:p) {
+         for (j in max(1, i - AD_order): (i - 1)) {  # Only connect up to t_order previous vars
+            Omega[i, j] <- -rho^(i - j)  # Decaying correlation
+            Omega[j, i] <- -rho^(i - j)  # Symmetric assignment
+         }
+         Omega[i, i] <- 1 + sum(rho^(1:min(AD_order, i - 1)))  # Adjust diagonal elements
+      }
+
+   }
+   # Compute covariance matrix
+   Sigma <- solve(Omega)
+
+   # Generate data from multivariate normal distribution
+   data <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
+
+   return(list("Omega" = Omega, "data" = data))
+}
+
