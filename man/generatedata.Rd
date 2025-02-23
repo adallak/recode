@@ -7,9 +7,9 @@
 generatedata(
   n,
   p,
-  type = c("star", "AD1"),
+  type = c("star", "AD"),
   variance = 1,
-  rho = 0.5,
+  rho = 0.9,
   AD_order = 1,
   seed = 123
 )

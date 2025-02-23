@@ -184,3 +184,16 @@
 #' @format ## A data frame with 215 rows and 146 variables:
 #' @source http://www.princeton.edu/~mwatson/ddisk/wc00.zip
 "SW2002"
+
+
+#' @title  Part of Million Song dataset.
+#' @description A dataset consists of information about 10000 songs, which are mostly western and range from
+#' 1922 to 2011. It contains p = 90 timbre features.
+#' The dataset is borrowed from  https://archive.ics.uci.edu/dataset/203/yearpredictionmsd.
+#'
+#' @docType data
+#' @usage data(yearpredictionmsd)
+#'
+#' @format ## A data frame with 10000 rows and 91 variables:
+#' @source https://archive.ics.uci.edu/dataset/203/yearpredictionmsd
+"yearpredictionmsd"
