@@ -5,8 +5,7 @@
 \alias{yearpredictionmsd}
 \title{Part of Million Song dataset.}
 \format{
-\subsection{A data frame with 10000 rows and 91 variables:}{
-}
+A data frame with 10000 rows and 91 variables.
 }
 \source{
 https://archive.ics.uci.edu/dataset/203/yearpredictionmsd

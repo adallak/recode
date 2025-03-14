@@ -5,8 +5,7 @@
 \alias{SW2002}
 \title{Stock and Watson (2002) dataset.}
 \format{
-\subsection{A data frame with 215 rows and 146 variables:}{
-}
+A data frame with 215 rows and 146 variables.
 }
 \source{
 http://www.princeton.edu/~mwatson/ddisk/wc00.zip

@@ -5,8 +5,7 @@
 \alias{brand}
 \title{Car brand perception survey.}
 \format{
-\subsection{A data frame with 1000 rows and 16 variables:}{
-}
+A data frame with 1000 rows and 16 variables.
 }
 \usage{
 data(brand)

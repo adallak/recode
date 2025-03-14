@@ -170,7 +170,7 @@
 #' @docType data
 #' @usage data(brand)
 #'
-#' @format ## A data frame with 1000 rows and 16 variables:
+#' @format A data frame with 1000 rows and 16 variables.
 "brand"
 
 
@@ -181,7 +181,7 @@
 #' @docType data
 #' @usage data(SW2002)
 #'
-#' @format ## A data frame with 215 rows and 146 variables:
+#' @format A data frame with 215 rows and 146 variables.
 #' @source http://www.princeton.edu/~mwatson/ddisk/wc00.zip
 "SW2002"
 
@@ -194,7 +194,7 @@
 #' @docType data
 #' @usage data(yearpredictionmsd)
 #'
-#' @format ## A data frame with 10000 rows and 91 variables:
+#' @format A data frame with 10000 rows and 91 variables.
 #' @source https://archive.ics.uci.edu/dataset/203/yearpredictionmsd
 "yearpredictionmsd"
 
@@ -206,6 +206,6 @@
 #' @docType data
 #' @usage data(sachs)
 #'
-#' @format ## A data frame with 7466 rows and 11 variables:
+#' @format A data frame with 7466 rows and 11 variables:
 #' @source Sachs et al. (2005)
 "sachs"
