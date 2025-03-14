@@ -197,3 +197,15 @@
 #' @format ## A data frame with 10000 rows and 91 variables:
 #' @source https://archive.ics.uci.edu/dataset/203/yearpredictionmsd
 "yearpredictionmsd"
+
+
+#' @title  Flow cytometry data from Sachs et al. (2005).
+#' @description A dataset consists of i $n = 7466$ simultaneous measurements of $p = 11$
+#'  phosphorylated proteins and phospholipids.
+#'
+#' @docType data
+#' @usage data(sachs)
+#'
+#' @format ## A data frame with 7466 rows and 11 variables:
+#' @source Sachs et al. (2005)
+"sachs"
