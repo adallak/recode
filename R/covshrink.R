@@ -69,7 +69,7 @@ denominator <- function(x){
 }
 
 estimate_lambda_F <- function(x){
-  return(numerator(x) / denominator(x))
+  return(max(0, min(1, numerator(x) / denominator(x))))
 }
 
 #' Implements shrinkage estimation of the covariance matrix using case F as in
@@ -87,16 +87,16 @@ cov_shrink_F <- function(x){
   n <- nrow(x)
   p <- ncol(x)
 
-  res = corpcor::var.shrink(X)
+  res = corpcor::var.shrink(x)
   D = diag(sqrt(res))
 
   lambda_F   = estimate_lambda_F(x)
   cat("Estimating optimal shrinkage intensity lambda for case F :", lambda_F, "\n")
-  cov_X = cov(S)
+  #cov_X = cov(S)
   rho = mean(cor(x) - diag(p))
   ##rho = (sum(cov_X) - sum(diag(cov_X))) / (p * (p - 1))
-  T = rho * diag(p) + (1 - rho) * matrix(1, p, p)
-  R = lambda_F * T + (1 - lambda_F) * cor(X)
+  mat_T = rho * diag(p) + (1 - rho) * matrix(1, p, p)
+  R = lambda_F * mat_T + (1 - lambda_F) * cor(x)
 
   sigma = D %*% R %*% D
   attr(sigma, "lambda.var") = attr(res, "lambda.var")
