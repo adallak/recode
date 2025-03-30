@@ -14,7 +14,7 @@ Sachs et al. (2005)
 data(sachs)
 }
 \description{
-A dataset consists of i $n = 7466$ simultaneous measurements of $p = 11$
-phosphorylated proteins and phospholipids.
+A list containing dataset  of i $n = 7466$ simultaneous measurements of $p = 11$
+phosphorylated proteins and phospholipids and the true graph.
 }
 \keyword{datasets}

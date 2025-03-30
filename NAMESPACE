@@ -3,6 +3,7 @@
 export(bias.plot)
 export(comparegraph)
 export(covEstimation)
+export(cov_shrink_F)
 export(cv.covEstimation)
 export(cv.threshlasso)
 export(find.thr.min)

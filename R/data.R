@@ -200,8 +200,8 @@
 
 
 #' @title  Flow cytometry data from Sachs et al. (2005).
-#' @description A dataset consists of i $n = 7466$ simultaneous measurements of $p = 11$
-#'  phosphorylated proteins and phospholipids.
+#' @description A list containing dataset  of i $n = 7466$ simultaneous measurements of $p = 11$
+#'  phosphorylated proteins and phospholipids and the true graph.
 #'
 #' @docType data
 #' @usage data(sachs)
