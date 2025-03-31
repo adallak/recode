@@ -37,12 +37,13 @@ compute_f_ij <- function(x, i, j) {
          )
 }
 
+
 numerator <- function(x){
   # X: n x p matrix (n observations, p variables)
   n <- nrow(x)
   p <- ncol(x)
   sum = 0
-  r_bar = mean(cor(x) - diag(p))
+  r_bar = sum((cor(x) - diag(p)))/ (p * (p-1))
   for (i in 1:p){
     for (j in 1:p){
       if (i != j){
@@ -57,7 +58,7 @@ denominator <- function(x){
   n <- nrow(x)
   p <- ncol(x)
   sum = 0
-  r_bar = mean(cor(x) - diag(p))
+  r_bar = sum((cor(x) - diag(p)))/ (p * (p-1))
   for (i in 1:p){
     for (j in 1:p){
       if(i != j){
@@ -93,9 +94,9 @@ cov_shrink_F <- function(x){
   lambda_F   = estimate_lambda_F(x)
   cat("Estimating optimal shrinkage intensity lambda for case F :", lambda_F, "\n")
   #cov_X = cov(S)
-  rho = mean(cor(x) - diag(p))
+  r_bar = sum((cor(x) - diag(p)))/ (p * (p-1))
   ##rho = (sum(cov_X) - sum(diag(cov_X))) / (p * (p - 1))
-  mat_T = rho * diag(p) + (1 - rho) * matrix(1, p, p)
+  mat_T = r_bar * diag(p) + (1 - r_bar) * matrix(1, p, p)
   R = lambda_F * mat_T + (1 - lambda_F) * cor(x)
 
   sigma = D %*% R %*% D
