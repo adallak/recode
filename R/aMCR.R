@@ -43,7 +43,7 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10, nlambda = 100,
   B_hat = matrix(0, nrow = p, ncol = q)
   Gamma_hat = matrix(0, nrow = q, ncol = q)
   lambda.min = c()
-  results = c()
+  #results = c()
   for (k in 1:q){
       mat = Y[,-k] - X %*% B_0_hat[,-k]
       X_aug = cbind(X, mat)
@@ -57,7 +57,7 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10, nlambda = 100,
       B_hat[,k] = coef[1:p]
       Gamma_hat[-k,k] = coef[(p+1):(p+q-1)]
       lambda.min[i] = result$lambda.min
-      results[i] = result
+      #results[i] = result
   }
   diag(Gamma_hat) = 1
   if (isTRUE(symm.rule)){
