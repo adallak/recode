@@ -8,6 +8,7 @@
 #' @param X  data matrix
 #' @param lam.vec vector of lambda values. None by default.
 #' @param nfolds number of folds; 10 by default
+#' @param nlambda number of lambdas; 100 by default
 #' @param penalty penalty type; lasso, MCP and SCAF. lasso is the default
 #' @param symm.rule the rule to make Gamma_hat matrix symmetric, if True `or` rule is used, and `and` rule otherwise
 #' @param seed   random seed
@@ -18,7 +19,7 @@
 #' *`B_0_hat` - Estimated initial coefficient matrix
 #' *`lambda.min` - the vector of lambda values selected from cross-validation
 #' @export
-aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10,
+aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10, nlambda = 100,
                 penalty = c("lasso", "MCP", "SCAD"),
                 symm.rule = TRUE , seed = 123){
 
@@ -32,7 +33,7 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10,
   B_0_hat = matrix(0, nrow = p, ncol = q)
   ## Compute initial matrix B_0
   for (i in 1:q){
-      cv.lasso = glmnet::cv.glmnet(x = X, y = Y[,i], lambda = lam.vec)
+      cv.lasso = glmnet::cv.glmnet(x = X, y = Y[,i], lambda = lam.vec, nlambda = nlambda)
       B_0_hat[,i] = as.matrix(coef(cv.lasso))[2:(p+1)]
   }
   if (is.null(lam.vec)){
@@ -52,12 +53,13 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10,
         result =  ncvreg::cv.ncvreg(X_train, y_train,
                                     penalty = penalty, seed = seed)
       }
-      coef = as.matrix(coef(result))[2,(p + q + 1)]
+      coef = as.matrix(coef(result))[2:(p + q)]
       B_hat[,k] = coef[1:p]
-      Gamma_hat[,k] = coef[(p+1):q]
+      Gamma_hat[-k,k] = coef[(p+1):(p+q)]
       lambda.min[i] = result$lambda.min
       results[i] = result
   }
+  diag(Gamma_hat) = 1
   if (isTRUE(symm.rule)){
       mask =check_zero_entries(Gamma_hat)
   }
