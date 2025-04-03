@@ -55,7 +55,7 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10, nlambda = 100,
       }
       coef = as.matrix(coef(result))[2:(p + q)]
       B_hat[,k] = coef[1:p]
-      Gamma_hat[-k,k] = coef[(p+1):(p+q)]
+      Gamma_hat[-k,k] = coef[(p+1):(p+q-1)]
       lambda.min[i] = result$lambda.min
       results[i] = result
   }
