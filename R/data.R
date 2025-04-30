@@ -209,3 +209,35 @@
 #' @format A data frame with 7466 rows and 11 variables:
 #' @source Sachs et al. (2005)
 "sachs"
+
+
+
+#' @title  Chemometrics example from Skagerberg et al. (1992).
+#' @description consists of `n = 56` observations, each with `p = 22` predictor variables and
+#' `q = 6` responses. The data are taken from a simulation of a low density tubular polyethylene
+#' reactor The predictor variables consist of temperatures measured at equal distances along the
+#' reactor together with the wall temperature of the reactor and the feed rate.
+#'  The responses are the output characteristics of the produced polymers
+#'
+#' @docType data
+#' @usage data(chemo)
+#'
+#' @format A list with two elements: `X` frame with 56 rows and 22 variables, and
+#' `y` frame with 56 rows and 6 variables.
+#' @source Skagerberg et al. (1992)
+"chemo"
+
+
+#' @title  Hypothetical datasets.
+#' @description  hypothetical dataset with 600 observations on seven variables.
+#' The psychological variables are locus of control (`locus_of_control`),
+#' self-concept (`self_concept`), and motivation (`motivation`). The academic variables
+#' are standardized tests scores in reading (`read`), writing (`write`),
+#' and science (`science`).
+#'
+#' @docType data
+#' @usage data(psych)
+#'
+#' @format `X` frame with 600 rows and 6 variables.
+#' @source Skagerberg et al. (1992)
+"psych"

@@ -15,7 +15,8 @@
 #'
 #' @return
 #' *`B_hat` - Estimated coefficient matrix
-#' *`Gamma_hat` - Estimated gamma matrix with the same sparsity as the precision matrix
+#' *`Gamma_hat` - Estimated Gamma matrix with the same sparsity as the precision matrix
+#' *`Gamma_hat` - Estimated adjacency matrix for `Gamma_hat`
 #' *`B_0_hat` - Estimated initial coefficient matrix
 #' *`lambda.min` - the vector of lambda values selected from cross-validation
 #' @export
@@ -33,13 +34,15 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10, nlambda = 100,
   B_0_hat = matrix(0, nrow = p, ncol = q)
   ## Compute initial matrix B_0
   for (i in 1:q){
-      cv.lasso = glmnet::cv.glmnet(x = X, y = Y[,i], lambda = lam.vec, nlambda = nlambda)
+      cv.lasso = glmnet::cv.glmnet(x = X, y = Y[,i], lambda = lam.vec,
+                                   nfolds = nfolds, nlambda = nlambda)
       B_0_hat[,i] = as.matrix(coef(cv.lasso))[2:(p+1)]
   }
   if (is.null(lam.vec)){
       lam.vec = cv.lasso$lambda
   }
   ## run aMCR
+  mu_hat = c()
   B_hat = matrix(0, nrow = p, ncol = q)
   Gamma_hat = matrix(0, nrow = q, ncol = q)
   lambda.min = c()
@@ -48,37 +51,40 @@ aMCR <- function(Y, X, lam.vec = NULL, nfolds = 10, nlambda = 100,
       mat = Y[,-k] - X %*% B_0_hat[,-k]
       X_aug = cbind(X, mat)
       if (penalty == "lasso"){
-        result = glmnet::cv.glmnet(x = X_aug, y = Y[,k], lambda = lam.vec)
+        result = glmnet::cv.glmnet(x = X_aug, y = Y[,k],
+                                   nfolds = nfolds, lambda = lam.vec)
       } else {
-        result =  ncvreg::cv.ncvreg(X_train, y_train,
-                                    penalty = penalty, seed = seed)
+        result =  ncvreg::cv.ncvreg(X = X_aug, y = Y[,k], lambda = lam.vec,
+                                    nfolds = nfolds, penalty = penalty, seed = seed)
       }
-      coef = as.matrix(coef(result))[2:(p + q)]
-      B_hat[,k] = coef[1:p]
-      Gamma_hat[-k,k] = coef[(p+1):(p+q-1)]
-      lambda.min[i] = result$lambda.min
+      coef = as.matrix(coef(result)) #[2:(p + q)]
+      B_hat[,k] = coef[2:(p+1)]
+      Gamma_hat[-k,k] = coef[(p+2):(p+q)]
+      mu_hat[k] = coef[1]
+      lambda.min[k] = result$lambda.min
       #results[i] = result
   }
-  diag(Gamma_hat) = 1
   if (isTRUE(symm.rule)){
-      mask =check_zero_entries(Gamma_hat)
+      mask =1 - check_zero_entries(Gamma_hat)
   }
   else {
-      mask =cons_check_zero_entries(Gamma_hat)
+      mask =1 - cons_check_zero_entries(Gamma_hat)
   }
   Gamma_hat = mask * Gamma_hat
-  return(list("B_hat" = B_hat, "Gamma_hat" = Gamma_hat,
-              "B_0_hat" = B_0_hat,
+  Gamma_hat = (Gamma_hat + t(Gamma_hat)) / 2
+  diag(Gamma_hat) = 1
+  return(list("B_hat" = B_hat, "Gamma_hat" = Gamma_hat, "mu_hat" = mu_hat,
+              "Gamma_adj" = mask, "B_0_hat" = B_0_hat,
               "lambda.min" = lambda.min, "lambda" = lam.vec,
               "model" = "aMCR"))
 }
 
 check_zero_entries <- function(mat) {
-    return((mat == 0) | (t(mat) == 0))
+    return(((mat == 0) | (t(mat) == 0))*1)
 }
 
 cons_check_zero_entries <- function(mat) {
-  return((mat == 0) & (t(mat) == 0))
+  return(((mat == 0) & (t(mat) == 0))*1)
 }
 
 

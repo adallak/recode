@@ -34,7 +34,8 @@ aMCR(
 }
 \value{
 *\code{B_hat} - Estimated coefficient matrix
-*\code{Gamma_hat} - Estimated gamma matrix with the same sparsity as the precision matrix
+*\code{Gamma_hat} - Estimated Gamma matrix with the same sparsity as the precision matrix
+*\code{Gamma_hat} - Estimated adjacency matrix for \code{Gamma_hat}
 *\code{B_0_hat} - Estimated initial coefficient matrix
 *\code{lambda.min} - the vector of lambda values selected from cross-validation
 }
