@@ -229,7 +229,7 @@
 
 
 #' @title  Hypothetical datasets.
-#' @description  hypothetical dataset with 600 observations on seven variables.
+#' @description  hypothetical dataset with 600 observations on six variables.
 #' The psychological variables are locus of control (`locus_of_control`),
 #' self-concept (`self_concept`), and motivation (`motivation`). The academic variables
 #' are standardized tests scores in reading (`read`), writing (`write`),
@@ -241,3 +241,20 @@
 #' @format `X` frame with 600 rows and 6 variables.
 #' @source Skagerberg et al. (1992)
 "psych"
+
+
+
+#' @title Fictional flood risk dataset
+#' @description Fictinal flood risk dataset with two variables
+#' rainfall and river flow. The dataset is generated using the following:
+#' \code{set.seed(123)}
+#' \code{n <- 500}
+#' \code{rainfall <- rgamma(n, shape = 5, rate = 0.2)}
+#' \code{epsilon <- rnorm(n, mean = 0, sd = 0.2)}
+#' \code{riverflow <- exp(0.05 * rainfall + epsilon)}
+#' @format A data with 500 rows and 2 variables:
+#' \describe{
+#'   \item{\code{rainfall (mm)}}{double the amounf of rain fall}
+#'   \item{\code{riveflow (m3/s)}}{double river flow rate}
+#'}
+"floodrisk"

@@ -14,7 +14,7 @@ Skagerberg et al. (1992)
 data(psych)
 }
 \description{
-hypothetical dataset with 600 observations on seven variables.
+hypothetical dataset with 600 observations on six variables.
 The psychological variables are locus of control (\code{locus_of_control}),
 self-concept (\code{self_concept}), and motivation (\code{motivation}). The academic variables
 are standardized tests scores in reading (\code{read}), writing (\code{write}),
