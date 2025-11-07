@@ -1,7 +1,7 @@
 # recode
 ## Introduction
 
-The `recode` is a complementary package to the book titled "Regressions in Covariances, Dependencies and Graphs".
+The `recode` is a complementary package to the book titled `Regressions in Covariances, Dependencies and Graphs`.
 
 ## Installation
 
