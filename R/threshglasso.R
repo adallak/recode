@@ -212,6 +212,7 @@ cv.threshlasso <- function(x, y, lambda = NULL, ngrid = 30, min.thresh = NULL,
    ## Estimate final
    out <- glmnet::glmnet(x= x, y = y, lambda = lambda, ...)
    beta.lasso = coef(out, lambda = lambda)
+   beta0.thr <- beta.lasso[1]  # Intercept
    beta.lasso.vec <- beta.lasso[-1,]  # Remove intercept
    active_set <- which(abs(beta.lasso.vec) > thresh_min)
    if(length(active_set) > 0) {
@@ -225,7 +226,6 @@ cv.threshlasso <- function(x, y, lambda = NULL, ngrid = 30, min.thresh = NULL,
 
      # Fill in the refitted coefficients
      beta.thr[active_set] <- coef(lm_fit)[-1]  # Exclude intercept
-     beta0.thr <- coef(lm_fit)[1]  # Intercept
    } else {
      # No variables selected, return all zeros
      beta.thr <- rep(0, p)
