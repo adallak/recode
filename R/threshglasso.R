@@ -154,7 +154,7 @@ cv.threshlasso <- function(x, y, lambda = NULL, ngrid = 30, min.thresh = NULL,
    if(is.null(lambda)) {
       lambda = glmnet::cv.glmnet(x, y)$lambda.min
    } else {
-      lambda = 0.01
+      lambda = lambda
    }
 
    if(is.null(min.thresh)) {
@@ -210,11 +210,28 @@ cv.threshlasso <- function(x, y, lambda = NULL, ngrid = 30, min.thresh = NULL,
    # Find thresh_1SE
    thresh_1se <- max(grid[cvm <= cvm[id] + cvse[id]])
    ## Estimate final
-   out <- glmnet::glmnet(x= x, y = y, lambda = 0, ...)
-   beta.coef = coef(out, lambda = 0)
-   beta0.thr = beta.coef[1,]
-   beta.coef[abs(beta.coef) <= thresh_min] = 0
-   beta.thr <- beta.coef[-1,]
+   out <- glmnet::glmnet(x= x, y = y, lambda = lambda, ...)
+   beta.coef = coef(out, lambda = lambda)
+   beta.lasso.vec <- beta.lasso[-1,]  # Remove intercept
+   active_set <- which(abs(beta.lasso.vec) > thresh_min)
+   if(length(active_set) > 0) {
+     # Refit with OLS on selected variables
+     X_active <- x[, active_set, drop = FALSE]
+     lm_fit <- lm(y ~ X_active)
+
+     # Initialize beta vector with zeros
+     beta.thr <- rep(0, p)
+     names(beta.thr) <- colnames(x)
+
+     # Fill in the refitted coefficients
+     beta.thr[active_set] <- coef(lm_fit)[-1]  # Exclude intercept
+     beta0.thr <- coef(lm_fit)[1]  # Intercept
+   } else {
+     # No variables selected, return all zeros
+     beta.thr <- rep(0, p)
+     names(beta.thr) <- colnames(x)
+     beta0.thr <- mean(y)  # Just the mean of y
+   }
 
    return(list(grid = grid,
                beta0.thr = beta0.thr, beta.thr = beta.thr,
@@ -234,9 +251,26 @@ cv.threshlasso <- function(x, y, lambda = NULL, ngrid = 30, min.thresh = NULL,
 #' @return vector of predictions
 #' @export
 predict_threshlasso <- function(thresh, test_x) {
-   beta_0 = thresh$beta0.thr
-   beta_mat = thresh$beta.thr
-   return(beta_0 + test_x %*% beta_mat)
+  # Convert to matrix if necessary
+  if (!is.matrix(test_x)) {
+    test_x <- as.matrix(test_x)
+  }
+
+  # Validate dimensions
+  if (ncol(test_x) != length(thresh$beta.thr)) {
+    stop(paste("test_x has", ncol(test_x), "columns but model expects",
+               length(thresh$beta.thr)))
+  }
+
+  # Get coefficients
+  beta_0 <- thresh$beta0.thr
+  beta_vec <- thresh$beta.thr  # More accurate name
+
+  # Make predictions
+  predictions <- beta_0 + test_x %*% beta_vec
+
+  # Return as vector (drop matrix dimension)
+  return(as.vector(predictions))
 }
 
 
