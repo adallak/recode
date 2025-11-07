@@ -211,7 +211,7 @@ cv.threshlasso <- function(x, y, lambda = NULL, ngrid = 30, min.thresh = NULL,
    thresh_1se <- max(grid[cvm <= cvm[id] + cvse[id]])
    ## Estimate final
    out <- glmnet::glmnet(x= x, y = y, lambda = lambda, ...)
-   beta.coef = coef(out, lambda = lambda)
+   beta.lasso = coef(out, lambda = lambda)
    beta.lasso.vec <- beta.lasso[-1,]  # Remove intercept
    active_set <- which(abs(beta.lasso.vec) > thresh_min)
    if(length(active_set) > 0) {
