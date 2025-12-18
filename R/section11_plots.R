@@ -176,6 +176,7 @@ cross_correlogram <- function(data, max_lag = NULL, ci = 0.95,
 #' @param cex.axis Axis text size
 #' @param cex.main Title text size
 #' @return List with lag values and maximum correlations
+#' @export
 plot_max_ccf_all_pairs <- function(data, max_lag = 20,
                                    main = "Maximum Cross-Correlation Across All Pairs",
                                    xlab = "Lag", ylab = "Maximum Cross-Correlation",
